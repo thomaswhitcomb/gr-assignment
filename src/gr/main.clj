@@ -4,8 +4,7 @@
 
 (defn specs []
   [[ "-f" "--file" "Specify a file name"]
-   [ "-c" "--column" "Specify a column name" :default "LastName"]
-   [ "-o" "--order" "Specify a sort order" :default "asc"]
+   [ "-v" "--view" "Specify a view" :default "1"]
    [ "-h" "--help" "Print this help" :default false :flag true]])
 
 (defn show-help[]
@@ -15,11 +14,8 @@
 (defn show-error [s]
   (println s))
 
-(defn valid-column? [s]
-  (gr.command.handler/columns s))
-
-(defn valid-order? [s]
-  (gr.command.handler/order-set s))
+(defn valid-view? [s]
+  (gr.command.handler/views s))
 
 (defn validate-options [parms]
   (let  [[opts args _] (apply cli parms (specs))]
@@ -30,7 +26,7 @@
       (:help opts)
       (show-help)
 
-      (and (:file opts) (valid-column? (:column opts)) (valid-order? (:order opts)))
+      (and (:file opts) (valid-view? (:view opts)))
       opts
 
       :else
@@ -38,7 +34,7 @@
 
 (defn validate-and-execute [parms]
   (if-let [opts (validate-options parms)]
-    (if-let [output (h/execute (:file opts) (:column opts) (:order opts))]
+    (if-let [output (h/execute (:file opts) (:view opts))]
       (do (println output) 0)
       1)
     1))

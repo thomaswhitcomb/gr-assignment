@@ -27,25 +27,25 @@
 
 ; Verify the ordering logic
 (deftest test-ordering
-  (is (= (:table (t/order table1 0  compare))
+  (is (= (:table (t/order table1 [0] [identity]  compare))
          [
           ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
           ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
           ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
          ]))
-  (is (= (:table (t/order table1 1  compare))
+  (is (= (:table (t/order table1 [1] [identity] compare))
          [
           ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
           ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
           ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
           ]))
-  (is (= (:table (t/order table1 2  compare))
+  (is (= (:table (t/order table1 [2] [identity] compare))
          [
           ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
           ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
           ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
           ]))
-  (is (= (:table (t/order table1 3  compare))
+  (is (= (:table (t/order table1 [3] [identity]  compare))
          [
           ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
           ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
@@ -53,7 +53,7 @@
          ]))
 
   ; Notice the compare - this is descending
-  (is (= (:table (t/order table1 3  #(compare %2 %1)))
+  (is (= (:table (t/order table1 [3] [identity] #(compare %2 %1)))
          [
           ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
           ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]

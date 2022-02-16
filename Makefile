@@ -4,14 +4,24 @@ all: test uberjar
 test:
 	clj -X:test
 
-.PHONY: run
-run:
-	clj -M -m gr.main
+.PHONY: testclj
+testclj: test
+	@echo ------ view1 -------
+	@clj -M -m gr.main -f table.txt -v 1
+	@echo ------ view2 -------
+	@clj -M -m gr.main -f table.txt -v 2
+	@echo ------ view3 -------
+	@clj -M -m gr.main -f table.txt -v 3
 
 .PHONY: uberjar
-uberjar:
+uberjar: test
 	clj -M:uberjar
 
-.PHONY: runjar
-runjar:
-	java -cp target/gr-sol.jar clojure.main -m gr.main
+.PHONY: testjar
+testjar: uberjar
+	@echo ------ view1 -------
+	@java -cp target/gr-sol.jar clojure.main -m gr.main -f table.txt -v 1
+	@echo ------ view2 -------
+	@java -cp target/gr-sol.jar clojure.main -m gr.main -f table.txt -v 2
+	@echo ------ view3 -------
+	@java -cp target/gr-sol.jar clojure.main -m gr.main -f table.txt -v 3
