@@ -1,0 +1,5 @@
+smith,bob,bob@fb.com,red,10/10/2000
+jones,scott,scott_jones@fb.com,blue,11/5/1986
+washington,george,martha@aol.com,blue,5/8/1786
+billy,bob,billybob@hillbilly.com,blue,10/09/2001
+shore,dinah,dinah@hollywood.com,yellow,/06/08/1934
