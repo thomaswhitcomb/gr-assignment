@@ -10,15 +10,12 @@
   (is (= (t/to-table "  benimble, jack ,   jack@fb.com,mauve ,  12/12/2000  " ",")
          [["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]]))
   (is (= (t/to-table "  benimble  jack     jack@fb.com mauve    12/12/2000  " " ")
-         [["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]]))
-
-)
+         [["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]])))
 ; Verify that pipe is found first, followed by , followed by " "
 (deftest test-content-delimiter-detection
   (is (= (t/content-delim "  abc,d| ") "|"))
   (is (= (t/content-delim "  abc,d ") ","))
-  (is (= (t/content-delim "  abcd ") " "))
-)
+  (is (= (t/content-delim "  abcd ") " ")))
 
 (def table1 {:table [["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
                      ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
@@ -28,58 +25,48 @@
 ; Verify the ordering logic
 (deftest test-ordering
   (is (= (:table (t/order table1 [0] [identity]  compare))
-         [
-          ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
+         [["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
           ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
-          ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
-         ]))
+          ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]]))
   (is (= (:table (t/order table1 [1] [identity] compare))
-         [
-          ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
+         [["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
           ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
-          ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
-          ]))
+          ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]]))
   (is (= (:table (t/order table1 [2] [identity] compare))
-         [
-          ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
+         [["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
           ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
-          ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
-          ]))
+          ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]]))
   (is (= (:table (t/order table1 [3] [identity]  compare))
-         [
-          ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
+         [["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
           ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
-          ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
-         ]))
+          ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]]))
 
   ; Notice the compare - this is descending
+
+
   (is (= (:table (t/order table1 [3] [identity] #(compare %2 %1)))
-         [
-          ["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
+         [["benimble" "jack" "jack@fb.com" "mauve" "12/12/2000"]
           ["finn" "neil" "neil@gmail.com" "green" "3/2/1962"]
-          ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]
-         ]))
-)
+          ["cooper" "alice" "alice@yahoo.com" "black" "1/1/1947"]])))
 (deftest test-rendering
   (is (= (t/render table1)
          (str
-           "benimble|jack|jack@fb.com|mauve|12/12/2000"
-           (System/lineSeparator)
-           "finn|neil|neil@gmail.com|green|3/2/1962"
-           (System/lineSeparator)
-           "cooper|alice|alice@yahoo.com|black|1/1/1947")))
+          "benimble|jack|jack@fb.com|mauve|12/12/2000"
+          (System/lineSeparator)
+          "finn|neil|neil@gmail.com|green|3/2/1962"
+          (System/lineSeparator)
+          "cooper|alice|alice@yahoo.com|black|1/1/1947")))
   (is (= (t/render (assoc table1 :delimiter ","))
          (str
-           "benimble,jack,jack@fb.com,mauve,12/12/2000"
-           (System/lineSeparator)
-           "finn,neil,neil@gmail.com,green,3/2/1962"
-           (System/lineSeparator)
-           "cooper,alice,alice@yahoo.com,black,1/1/1947")))
+          "benimble,jack,jack@fb.com,mauve,12/12/2000"
+          (System/lineSeparator)
+          "finn,neil,neil@gmail.com,green,3/2/1962"
+          (System/lineSeparator)
+          "cooper,alice,alice@yahoo.com,black,1/1/1947")))
   (is (= (t/render (assoc table1 :delimiter " "))
          (str
-           "benimble jack jack@fb.com mauve 12/12/2000"
-           (System/lineSeparator)
-           "finn neil neil@gmail.com green 3/2/1962"
-           (System/lineSeparator)
-           "cooper alice alice@yahoo.com black 1/1/1947")))
-)
+          "benimble jack jack@fb.com mauve 12/12/2000"
+          (System/lineSeparator)
+          "finn neil neil@gmail.com green 3/2/1962"
+          (System/lineSeparator)
+          "cooper alice alice@yahoo.com black 1/1/1947"))))

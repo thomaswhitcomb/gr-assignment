@@ -1,13 +1,14 @@
 (ns gr.main)
 (require '[clojure.tools.cli :refer [cli]])
-(require '[gr.command.handler :as h])
+(require '[gr.handlers.util :as h])
+(require '[gr.handlers.command :as c])
 
 (defn specs []
-  [[ "-f" "--file" "Specify a file name"]
-   [ "-v" "--view" "Specify a view" :default "1"]
-   [ "-h" "--help" "Print this help" :default false :flag true]])
+  [["-f" "--file" "Specify a file name"]
+   ["-v" "--view" "Specify a view" :default "1"]
+   ["-h" "--help" "Print this help" :default false :flag true]])
 
-(defn show-help[]
+(defn show-help []
   (let  [[_ _ msgs] (apply cli [] (specs))]
     (println msgs)))
 
@@ -15,7 +16,7 @@
   (println s))
 
 (defn valid-view? [s]
-  (gr.command.handler/views s))
+  (h/views s))
 
 (defn validate-options [parms]
   (let  [[opts args _] (apply cli parms (specs))]
@@ -34,11 +35,11 @@
 
 (defn validate-and-execute [parms]
   (if-let [opts (validate-options parms)]
-    (if-let [output (h/execute (:file opts) (:view opts))]
+    (if-let [output (c/execute (:file opts) (:view opts))]
       (do (println output) 0)
       1)
     1))
 
 (defn -main [& parms]
   (System/exit
-    (validate-and-execute parms)))
+   (validate-and-execute parms)))

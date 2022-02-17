@@ -26,7 +26,7 @@
   (is (nil? (m/validate-options ["--file" "name" "blah"])))
 
   ; successful set
-  (is (some? (m/validate-options ["--file" "name" "--view"  "1" ])))
+  (is (some? (m/validate-options ["--file" "name" "--view"  "1"])))
 
   ; unsuccessful set with extra param
   (is (nil? (m/validate-options ["--file" "name" "--view"  "2" "extra"])))
@@ -38,23 +38,21 @@
   (is (nil?
        (try
          (m/validate-options
-           ["--file" "name"
-            "--view"  "2"
-            "--whatever"])
+          ["--file" "name"
+           "--view"  "2"
+           "--whatever"])
          (catch Exception e nil))))
 
   ; unsuccessful set which unknown option and value.
   (is (nil?
-        (try
-          (m/validate-options
-            ["--file" "name"
-             "--view"  "2"
-             "--whatever" "whatever"])
-          (catch Exception e nil))))
-)
+       (try
+         (m/validate-options
+          ["--file" "name"
+           "--view"  "2"
+           "--whatever" "whatever"])
+         (catch Exception e nil)))))
 (deftest test-view-settings
   (is (some? (m/valid-view? "1")))
   (is (some? (m/valid-view? "2")))
   (is (some? (m/valid-view? "3")))
-  (is (nil?  (m/valid-view? "4")))
-)
+  (is (nil?  (m/valid-view? "4"))))

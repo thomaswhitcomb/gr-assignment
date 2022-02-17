@@ -1,20 +1,21 @@
-(ns gr.command.handler)
+(ns gr.handlers.util)
 (require '[gr.model.table :as model])
 (require '[clojure.string :as str])
 
 (def _order
-   {:asc compare
-    :dsc #(compare %2 %1)})
+  {:asc compare
+   :dsc #(compare %2 %1)})
 
 (defn date-transformer
   "Take a string in dd/mm/yyyy format and make it an integer from yyyymmdd"
   [s]
   (->
-    s
-    (str/split #"/")
-    (reverse)
-    (str/join)
-    (java.lang.Integer.)))
+   s
+   (str/split #"/")
+   ((fn [x] (map #(if (= 1 (count %)) (str "0" %) %) x)))
+   (reverse)
+   (str/join)
+   (java.lang.Integer.)))
 
 (def _columns
   {:last_name
@@ -56,15 +57,12 @@
   [view]
   (_order (:order (views view))))
 
-(defn execute
-  "Take an inputStream, File, URL, filename,etc for table content and a view id, read the stream/file and return a string representing the requested table view"
-  [source view]
-  (let [content (slurp source)
-        table (model/new content)]
-    (->>
-      (model/order
-        table
-        (view-to-column-numbers view)
-        (view-to-column-transformers view)
-        (view-to-comparer view))
-      (model/render))))
+(defn create-view
+  "Take for table content and a view id, read the stream/file and return a string representing the requested table view"
+  [content view]
+  (let [table (model/new content)]
+    (model/order
+     table
+     (view-to-column-numbers view)
+     (view-to-column-transformers view)
+     (view-to-comparer view))))
