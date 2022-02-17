@@ -30,6 +30,8 @@ To run the HTTP application:
 
     make http
 
+The **http-request.sh** script runs the POST and GET commands.
+
 #### HTTP Requests
 
 - **POST** */records* - Post a single data line in any of the 3 formats supported by your existing code
