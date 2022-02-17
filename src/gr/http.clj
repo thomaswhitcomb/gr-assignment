@@ -7,7 +7,7 @@
 
 (defn home
   [request]
-  {:body "Guaranteed Rate Coding Assignment"
+  {:body "Guaranteed Rate Homework Assignment"
    :status 200
    :headers {"Content-Type" "text/plain"}})
 
