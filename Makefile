@@ -6,11 +6,11 @@ test:
 
 .PHONY: testclj
 testclj: test
-	@echo ------ view1 -------
+	@echo ------ color, lastname ascending -------
 	@clj -M -m gr.main -f table.txt -v 1
-	@echo ------ view2 -------
+	@echo ------ birth date ascending -------
 	@clj -M -m gr.main -f table.txt -v 2
-	@echo ------ view3 -------
+	@echo ------ last name descending -------
 	@clj -M -m gr.main -f table.txt -v 3
 
 .PHONY: uberjar
@@ -19,9 +19,13 @@ uberjar: test
 
 .PHONY: testjar
 testjar: uberjar
-	@echo ------ view1 -------
+	@echo ------ color, lastname ascending -------
 	@java -cp target/gr-sol.jar clojure.main -m gr.main -f table.txt -v 1
-	@echo ------ view2 -------
+	@echo ------ birth date ascending -------
 	@java -cp target/gr-sol.jar clojure.main -m gr.main -f table.txt -v 2
-	@echo ------ view3 -------
+	@echo ------ last name descending -------
 	@java -cp target/gr-sol.jar clojure.main -m gr.main -f table.txt -v 3
+
+.PHONY: http
+http: test
+	clj -M -m gr.http

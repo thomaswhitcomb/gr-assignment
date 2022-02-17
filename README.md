@@ -17,3 +17,7 @@ This is the homework assignment for Guaranteed Rate.
 ### Run the 3 views on the table.txt using the uberjar.
 
 `make testjar`
+
+### Start the standalone webserver on port 8080
+
+`make http`
